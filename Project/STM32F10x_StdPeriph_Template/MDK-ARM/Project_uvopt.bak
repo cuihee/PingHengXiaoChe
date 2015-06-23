@@ -2008,10 +2008,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>13</ColumnNumber>
+      <ColumnNumber>3</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>36</TopLine>
-      <CurrentLine>58</CurrentLine>
+      <CurrentLine>59</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\drivers\MiniBalance\MiniBalance.c</PathWithFileName>
       <FilenameWithoutPath>MiniBalance.c</FilenameWithoutPath>

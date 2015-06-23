@@ -30,7 +30,7 @@ void oled_show(void)
 		else if(Way_Angle==2)	OLED_ShowString(45,0,"Kalman");
 		else if(Way_Angle==3)	OLED_ShowString(45,0,"Hubu");
 		//=============ÏÔÊ¾ÎÂ¶È=======================//	
-		                      OLED_ShowString(02,10,"Wendu");
+		                      OLED_ShowString(02,10,"Tempe");
 		                      OLED_ShowNumber(45,10,Temperature/10,2,12);
 		                      OLED_ShowNumber(68,10,Temperature%10,1,12);
 		                      OLED_ShowString(58,10,".");
