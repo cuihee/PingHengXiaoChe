@@ -17,39 +17,45 @@ void oled_show(void)
 {
 	  Count=0;
 		OLED_Display_On();  //显示屏打开
+		//=============显示边框=======================//	
+													OLED_Fill(0,0, 127,0,1);
+													OLED_Fill(0,0, 0,63,1);
+													OLED_Fill(127,0, 127,63,1);
+													OLED_Fill(0,63, 127,63,1);
+	
 		//=============显示滤波器=======================//	
-		                      OLED_ShowString(00,0,"Alg:");
+		                      OLED_ShowString(02,0,"Alg:");
 		                      OLED_ShowNumber(30,0, Way_Angle,1,12);
 	       if(Way_Angle==1)	OLED_ShowString(45,0,"DMP");
 		else if(Way_Angle==2)	OLED_ShowString(45,0,"Kalman");
 		else if(Way_Angle==3)	OLED_ShowString(45,0,"Hubu");
 		//=============显示温度=======================//	
-		                      OLED_ShowString(00,10,"Wendu");
+		                      OLED_ShowString(02,10,"Wendu");
 		                      OLED_ShowNumber(45,10,Temperature/10,2,12);
 		                      OLED_ShowNumber(68,10,Temperature%10,1,12);
 		                      OLED_ShowString(58,10,".");
 		                      OLED_ShowString(80,10,"`C");
 		//=============显示编码器1=======================//	
-		                      OLED_ShowString(00,20,"Enco1");
+		                      OLED_ShowString(02,20,"Enco1");
 		if( Encoder_Left<0)		OLED_ShowString(45,20,"-"),
 		                      OLED_ShowNumber(65,20,-Encoder_Left,5,12);
 		else                 	OLED_ShowString(45,20,"+"),
 		                      OLED_ShowNumber(65,20, Encoder_Left,5,12);
   	//=============显示编码器2=======================//		
-		                      OLED_ShowString(00,30,"Enco2");
+		                      OLED_ShowString(02,30,"Enco2");
 		if(Encoder_Right<0)		OLED_ShowString(45,30,"-"),
 		                      OLED_ShowNumber(65,30,-Encoder_Right,5,12);
 		else               		OLED_ShowString(45,30,"+"),
 		                      OLED_ShowNumber(65,30,Encoder_Right,5,12);	
 		//=============显示电压=======================//
-		                      OLED_ShowString(00,40,"Volta");
+		                      OLED_ShowString(02,40,"Volta");
 		                      OLED_ShowString(58,40,".");
 		                      OLED_ShowString(80,40,"V");
 		                      OLED_ShowNumber(45,40,Voltage/100,2,12);
 		                      OLED_ShowNumber(68,40,Voltage%100,2,12);
 		 if(Voltage%100<10) 	OLED_ShowNumber(62,40,0,2,12);
 		//=============显示角度=======================//
-		                      OLED_ShowString(0,50,"Angle");
+		                      OLED_ShowString(02,50,"Angle");
 		if(Angle_Balance<0)		OLED_ShowNumber(45,50,Angle_Balance+360,3,12);
 		else					        OLED_ShowNumber(45,50,Angle_Balance,3,12);
 		//=============刷新=======================//
