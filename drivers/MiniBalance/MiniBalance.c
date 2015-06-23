@@ -136,8 +136,8 @@ void Set_Pwm(int moto1,int moto2)
 			if(moto1<0)			AIN2=1,			AIN1=0;
 			else 	          AIN2=0,			AIN1=1;
 			PWMA=myabs(moto1);
-		  if(moto2<0)	BIN1=0,			BIN2=1;
-			else        BIN1=1,			BIN2=0;
+		  if(moto2<0)			BIN2=0,			BIN1=1;
+			else        		BIN2=1,			BIN1=0;
 			PWMB=myabs(moto2);	
 }
 /**************************************************************************
@@ -153,9 +153,17 @@ void readEncoder(void)
 		TIM4 -> CNT=0;                 //===计数器清零  
 	  Encoder_L= TIM2 -> CNT;        //===获取正交解码2数据	
 	  TIM2 -> CNT=0;	               //===计数器清零
-		if(Encoder_L>32768)  Encoder_Left=Encoder_L-65000; else  Encoder_Left=Encoder_L;  //===数据类型转换
+	
+		if(Encoder_L>32768)  
+			Encoder_Left=Encoder_L-65000; 
+			else
+				Encoder_Left=Encoder_L;  //===数据类型转换
   	Encoder_Left=-Encoder_Left;
-	  if(Encoder_R>32768)  Encoder_Right=Encoder_R-65000; else  Encoder_Right=Encoder_R;//===数据类型转换
+			
+	  if(Encoder_R>32768)  
+			Encoder_Right=Encoder_R-65000; 
+			else
+				Encoder_Right=Encoder_R;//===数据类型转换
 }
 
 /**************************************************************************
@@ -167,9 +175,9 @@ void readEncoder(void)
 void Xianfu_Pwm(void)
 {	
 	  int Amplitude=3500;    //===PWM满幅是3600 限制在3500
-    if(Moto1<-Amplitude) Moto1=-Amplitude;	
+    if(Moto1<-Amplitude) Moto1=-Amplitude-1;	
 		if(Moto1>Amplitude)  Moto1=Amplitude;	
-	  if(Moto2<-Amplitude) Moto2=-Amplitude;	
+	  if(Moto2<-Amplitude) Moto2=-Amplitude-1;	
 		if(Moto2>Amplitude)  Moto2=Amplitude;		
 	
 }
