@@ -178,8 +178,7 @@ void Xianfu_Pwm(void)
     if(Moto1<-Amplitude) Moto1=-Amplitude-1;	
 		if(Moto1>Amplitude)  Moto1=Amplitude;	
 	  if(Moto2<-Amplitude) Moto2=-Amplitude-1;	
-		if(Moto2>Amplitude)  Moto2=Amplitude;		
-	
+		if(Moto2>Amplitude)  Moto2=Amplitude;	
 }
 
 /**************************************************************************
@@ -191,8 +190,8 @@ void Xianfu_Pwm(void)
 u8 Turn_Off(float angle, int voltage)
 {
 	    u8 temp;
-			if(angle<-40||angle>40||1==Flag_Stop||Voltage<1110)//===电压低于11.1V 关闭电机
-			{	                                                 //===倾角大于40度关闭电机
+			if(angle<-45||angle>45||1==Flag_Stop||Voltage<1110)//===电压低于11.1V 关闭电机
+			{	                                                 //===倾角大于45度关闭电机
       temp=1;                                            //===Flag_Stop置1关闭电机
 			AIN1=0;                                            //===可自行增加主板温度过高时关闭电机
 			AIN2=0;
