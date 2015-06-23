@@ -24,9 +24,9 @@ void TIM1_UP_TIM16_IRQHandler(void)
   		Led_Flash(400);                                          //===LED闪烁;	
   		Get_battery_volt();                                      //===获取电池电压	          
 			key(100);                                                //===扫描按键状态
-		  Get_Angle(Way_Angle);                                    //===更新姿态	
- 			Balance_Pwm =balance(Angle_Balance,Gyro_Balance);        //===平衡PID控制	
- 			Velocity_Pwm=velocity(Encoder_Left,Encoder_Right);       //===速度环PID控制
+		  Get_Angle(Way_Angle);	//输入哪种方法 输出Gyro_Balance Angle_Balance=angle Gyro_Turn=Gyro_Z 【姿态】
+ 			Balance_Pwm = balance(Angle_Balance, Gyro_Balance);//输入 角度 角（？）速度  输出 对电机的PWM控制PID
+ 			Velocity_Pwm= velocity(Encoder_Left,Encoder_Right);       //===速度环PID控制
  	    Turn_Pwm    =turn(Encoder_Left,Encoder_Right,Gyro_Turn); //===转向环PID控制     
  		  Moto1=Balance_Pwm+Velocity_Pwm-Turn_Pwm;                 //===计算左轮电机最终PWM
  	  	Moto2=Balance_Pwm+Velocity_Pwm+Turn_Pwm;                 //===计算右轮电机最终PWM
@@ -54,8 +54,8 @@ int balance(float Angle,float Gyro)//Y向 角偏差
 	 eI[(sei++)%10]=Bias;
    for(tempi=0;tempi<10;tempi++)
 			sumei += eI[tempi];
-	 balance=30*Bias+Gyro*0.125+sumei*1.05;//===计算平衡控制的电机PWM  PD控制 
 	 sumei=0;
+	 balance=30*Bias+sumei*1.1+Gyro*0.13;//===计算平衡控制的电机PWM  PID控制 	 
 	 return balance;
 }
 
