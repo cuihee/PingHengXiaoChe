@@ -55,7 +55,7 @@ int balance(float Angle,float Gyro)//Y向 角偏差
    for(tempi=0;tempi<10;tempi++)
 			sumei += eI[tempi];
 	 sumei=0;
-	 balance=30*Bias+sumei*1.1+Gyro*0.13;//===计算平衡控制的电机PWM  PID控制 	 
+	 balance=33*Bias+sumei*1.1+Gyro*0.13;//===计算平衡控制的电机PWM  PID控制 	 
 	 return balance;
 }
 
