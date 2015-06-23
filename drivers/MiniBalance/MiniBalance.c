@@ -42,12 +42,12 @@ void TIM1_UP_TIM16_IRQHandler(void)
 返回  值：直立控制PWM
 作    者：平衡小车之家
 **************************************************************************/
-int balance(float Angle,float Gyro)//Angle偏离竖直多少度  Gyro是Y向角加速度
+int balance(float Angle,float Gyro)//Y向 角偏差    Y向 角加速度
 {  
    float Bias;
 	 int balance;
-	 Bias=Angle+0;              //矫正，如果小车平衡时候芯片不是z竖直，那就矫正，这里基本就是0度偏移不矫正
-	 balance=40*Bias+Gyro*0.125;//===计算平衡控制的电机PWM  PD控制 
+	 Bias=Angle+0;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
+	 balance=37*Bias+Gyro*0.125;//===计算平衡控制的电机PWM  PD控制 
 	 return balance;
 }
 
@@ -136,8 +136,8 @@ void Set_Pwm(int moto1,int moto2)
 			if(moto1<0)			AIN2=1,			AIN1=0;
 			else 	          AIN2=0,			AIN1=1;
 			PWMA=myabs(moto1);
-		  if(moto2<0)			BIN2=0,			BIN1=1;
-			else        		BIN2=1,			BIN1=0;
+		  if(moto2<0)	BIN1=0,			BIN2=1;
+			else        BIN1=1,			BIN2=0;
 			PWMB=myabs(moto2);	
 }
 /**************************************************************************
@@ -153,17 +153,9 @@ void readEncoder(void)
 		TIM4 -> CNT=0;                 //===计数器清零  
 	  Encoder_L= TIM2 -> CNT;        //===获取正交解码2数据	
 	  TIM2 -> CNT=0;	               //===计数器清零
-	
-		if(Encoder_L>32768)  
-			Encoder_Left=Encoder_L-65000; 
-			else
-				Encoder_Left=Encoder_L;  //===数据类型转换
+		if(Encoder_L>32768)  Encoder_Left=Encoder_L-65000; else  Encoder_Left=Encoder_L;  //===数据类型转换
   	Encoder_Left=-Encoder_Left;
-			
-	  if(Encoder_R>32768)  
-			Encoder_Right=Encoder_R-65000; 
-			else
-				Encoder_Right=Encoder_R;//===数据类型转换
+	  if(Encoder_R>32768)  Encoder_Right=Encoder_R-65000; else  Encoder_Right=Encoder_R;//===数据类型转换
 }
 
 /**************************************************************************
@@ -175,10 +167,11 @@ void readEncoder(void)
 void Xianfu_Pwm(void)
 {	
 	  int Amplitude=3500;    //===PWM满幅是3600 限制在3500
-    if(Moto1<-Amplitude) Moto1=-Amplitude-1;	
+    if(Moto1<-Amplitude) Moto1=-Amplitude;	
 		if(Moto1>Amplitude)  Moto1=Amplitude;	
-	  if(Moto2<-Amplitude) Moto2=-Amplitude-1;	
-		if(Moto2>Amplitude)  Moto2=Amplitude;	
+	  if(Moto2<-Amplitude) Moto2=-Amplitude;	
+		if(Moto2>Amplitude)  Moto2=Amplitude;		
+	
 }
 
 /**************************************************************************
@@ -190,8 +183,8 @@ void Xianfu_Pwm(void)
 u8 Turn_Off(float angle, int voltage)
 {
 	    u8 temp;
-			if(angle<-45||angle>45||1==Flag_Stop||Voltage<1110)//===电压低于11.1V 关闭电机
-			{	                                                 //===倾角大于45度关闭电机
+			if(angle<-40||angle>40||1==Flag_Stop||Voltage<1110)//===电压低于11.1V 关闭电机
+			{	                                                 //===倾角大于40度关闭电机
       temp=1;                                            //===Flag_Stop置1关闭电机
 			AIN1=0;                                            //===可自行增加主板温度过高时关闭电机
 			AIN2=0;
@@ -211,37 +204,26 @@ u8 Turn_Off(float angle, int voltage)
 **************************************************************************/
 void Get_Angle(u8 way)
 { 
-	    float Accel_X,Accel_Y,Accel_Z, Gyro_Y,Gyro_Z,Gyro_X;
+	    float Accel_Y,Accel_X,Accel_Z,Gyro_Y,Gyro_Z;
 	    if(way==1)                                      //DMP没有涉及到严格的时序问题，在主函数读取
 			{	
-			}
+			}			
       else
       {
-			Gyro_Y=(I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_YOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_YOUT_L);//读取Y轴陀螺仪
-			Gyro_Z=(I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_ZOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_ZOUT_L);//读取Z轴陀螺仪
-			Gyro_X=(I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_XOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_XOUT_L);//读取X轴陀螺仪
-			//本来没有x轴
-		  Accel_X=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_XOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_XOUT_L);//读取X轴加速度记
-			Accel_Y=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_YOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_YOUT_L);//读取Y轴加速度记
-	  	Accel_Z=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_ZOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_ZOUT_L);//读取Z轴加速度记
+			Gyro_Y=(I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_YOUT_H)<<8)+I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_YOUT_L);    //读取Y轴陀螺仪
+			Gyro_Z=(I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_ZOUT_H)<<8)+I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_ZOUT_L);    //读取Z轴陀螺仪
+		  Accel_X=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_XOUT_H)<<8)+I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_XOUT_L); //读取X轴加速度记
+	  	Accel_Z=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_ZOUT_H)<<8)+I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_ZOUT_L); //读取Z轴加速度记
 		  if(Gyro_Y>32768)  Gyro_Y-=65536;     //数据类型转换
 			if(Gyro_Z>32768)  Gyro_Z-=65536;     //数据类型转换
-			if(Gyro_X>32768)  Gyro_X-=65536;     //数据类型转换
 	  	if(Accel_X>32768) Accel_X-=65536;    //数据类型转换
-			if(Accel_Y>32768) Accel_Y-=65536;    //数据类型转换
 		  if(Accel_Z>32768) Accel_Z-=65536;    //数据类型转换
-			
-			Gyro_Balance=-Gyro_Y;  //注意看【Gyro_Balance】       //更新平衡角速度
+			Gyro_Balance=-Gyro_Y;                                  //更新平衡角速度
 	   	Accel_Y=atan2(Accel_X,Accel_Z)*180/PI;                 //计算与地面的夹角	
-		  Gyro_Y=Gyro_Y/16.4;                        				//陀螺仪量程转换	
-			
-      if(Way_Angle==2)		  	
-				Kalman_Filter(Accel_Y,-Gyro_Y);//卡尔曼滤波	
-				else 
-					if(Way_Angle==3)   
-						Yijielvbo(Accel_Y,-Gyro_Y);    //一阶互补滤波
-			
-	    Angle_Balance=angle;   //注意看【Angle_Balance】         //更新平衡倾角(偏离竖直方向多少度
-			Gyro_Turn=Gyro_Z;    //注意看【Gyro_Turn】           //更新转向角速度
+		  Gyro_Y=Gyro_Y/16.4;                                    //陀螺仪量程转换	
+      if(Way_Angle==2)		  	Kalman_Filter(Accel_Y,-Gyro_Y);//卡尔曼滤波	
+			else if(Way_Angle==3)   Yijielvbo(Accel_Y,-Gyro_Y);    //互补滤波
+	    Angle_Balance=angle;                                   //更新平衡倾角
+			Gyro_Turn=Gyro_Z;                                      //更新转向角速度
 	  	}
 }
