@@ -47,7 +47,7 @@ int balance(float Angle,float Gyro)//Angle偏离竖直多少度  Gyro是Y向角加速度
    float Bias;
 	 int balance;
 	 Bias=Angle+0;              //矫正，如果小车平衡时候芯片不是z竖直，那就矫正，这里基本就是0度偏移不矫正
-	 balance=40*Bias+Gyro*0.225;//===计算平衡控制的电机PWM  PD控制 
+	 balance=40*Bias+Gyro*0.125;//===计算平衡控制的电机PWM  PD控制 
 	 return balance;
 }
 
