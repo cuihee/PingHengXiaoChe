@@ -36,7 +36,7 @@
 ### ADS-LD Output File: '..\..\..\HEX_OUTPUT\STM32100E-EVAL.axf'
 ### ADS-LD Command File: '..\..\..\HEX_OUTPUT\STM32100E-EVAL.lnp'
 ### Checking for dirty Components...
-### Creating CmdFile '..\..\..\HEX_OUTPUT\STM32100E-EVAL.lnp', Handle=0x00000388
+### Creating CmdFile '..\..\..\HEX_OUTPUT\STM32100E-EVAL.lnp', Handle=0x00000C90
 ### Writing '.lnp' file
 ### ADS-LD Command file '..\..\..\HEX_OUTPUT\STM32100E-EVAL.lnp' is ready.
 ### ADS-LD: About to start ADS-LD Thread.
