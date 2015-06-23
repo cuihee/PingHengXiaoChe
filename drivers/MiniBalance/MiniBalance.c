@@ -42,12 +42,12 @@ void TIM1_UP_TIM16_IRQHandler(void)
 返回  值：直立控制PWM
 作    者：平衡小车之家
 **************************************************************************/
-int balance(float Angle,float Gyro)
+int balance(float Angle,float Gyro)//Angle偏离竖直多少度  Gyro是Y向角加速度
 {  
    float Bias;
 	 int balance;
-	 Bias=Angle+0;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
-	 balance=35*Bias+Gyro*0.125;//===计算平衡控制的电机PWM  PD控制 
+	 Bias=Angle+0;              //矫正，如果小车平衡时候芯片不是z竖直，那就矫正，这里基本就是0度偏移不矫正
+	 balance=40*Bias+Gyro*0.225;//===计算平衡控制的电机PWM  PD控制 
 	 return balance;
 }
 
@@ -241,7 +241,7 @@ void Get_Angle(u8 way)
 					if(Way_Angle==3)   
 						Yijielvbo(Accel_Y,-Gyro_Y);    //一阶互补滤波
 			
-	    Angle_Balance=angle;   //注意看【Angle_Balance】         //更新平衡倾角
+	    Angle_Balance=angle;   //注意看【Angle_Balance】         //更新平衡倾角(偏离竖直方向多少度
 			Gyro_Turn=Gyro_Z;    //注意看【Gyro_Turn】           //更新转向角速度
 	  	}
 }
