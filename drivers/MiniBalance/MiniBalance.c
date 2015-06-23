@@ -211,26 +211,37 @@ u8 Turn_Off(float angle, int voltage)
 **************************************************************************/
 void Get_Angle(u8 way)
 { 
-	    float Accel_Y,Accel_X,Accel_Z,Gyro_Y,Gyro_Z;
+	    float Accel_X,Accel_Y,Accel_Z, Gyro_Y,Gyro_Z,Gyro_X;
 	    if(way==1)                                      //DMP没有涉及到严格的时序问题，在主函数读取
 			{	
-			}			
+			}
       else
       {
-			Gyro_Y=(I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_YOUT_H)<<8)+I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_YOUT_L);    //读取Y轴陀螺仪
-			Gyro_Z=(I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_ZOUT_H)<<8)+I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_ZOUT_L);    //读取Z轴陀螺仪
-		  Accel_X=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_XOUT_H)<<8)+I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_XOUT_L); //读取X轴加速度记
-	  	Accel_Z=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_ZOUT_H)<<8)+I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_ZOUT_L); //读取Z轴加速度记
+			Gyro_Y=(I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_YOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_YOUT_L);//读取Y轴陀螺仪
+			Gyro_Z=(I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_ZOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_ZOUT_L);//读取Z轴陀螺仪
+			Gyro_X=(I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_XOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_GYRO_XOUT_L);//读取X轴陀螺仪
+			//本来没有x轴
+		  Accel_X=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_XOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_XOUT_L);//读取X轴加速度记
+			Accel_Y=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_YOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_YOUT_L);//读取Y轴加速度记
+	  	Accel_Z=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_ZOUT_H)<<8) + I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_ZOUT_L);//读取Z轴加速度记
 		  if(Gyro_Y>32768)  Gyro_Y-=65536;     //数据类型转换
 			if(Gyro_Z>32768)  Gyro_Z-=65536;     //数据类型转换
+			if(Gyro_X>32768)  Gyro_X-=65536;     //数据类型转换
 	  	if(Accel_X>32768) Accel_X-=65536;    //数据类型转换
+			if(Accel_Y>32768) Accel_Y-=65536;    //数据类型转换
 		  if(Accel_Z>32768) Accel_Z-=65536;    //数据类型转换
-			Gyro_Balance=-Gyro_Y;                                  //更新平衡角速度
+			
+			Gyro_Balance=-Gyro_Y;  //注意看【Gyro_Balance】       //更新平衡角速度
 	   	Accel_Y=atan2(Accel_X,Accel_Z)*180/PI;                 //计算与地面的夹角	
-		  Gyro_Y=Gyro_Y/16.4;                                    //陀螺仪量程转换	
-      if(Way_Angle==2)		  	Kalman_Filter(Accel_Y,-Gyro_Y);//卡尔曼滤波	
-			else if(Way_Angle==3)   Yijielvbo(Accel_Y,-Gyro_Y);    //互补滤波
-	    Angle_Balance=angle;                                   //更新平衡倾角
-			Gyro_Turn=Gyro_Z;                                      //更新转向角速度
+		  Gyro_Y=Gyro_Y/16.4;                        				//陀螺仪量程转换	
+			
+      if(Way_Angle==2)		  	
+				Kalman_Filter(Accel_Y,-Gyro_Y);//卡尔曼滤波	
+				else 
+					if(Way_Angle==3)   
+						Yijielvbo(Accel_Y,-Gyro_Y);    //一阶互补滤波
+			
+	    Angle_Balance=angle;   //注意看【Angle_Balance】         //更新平衡倾角
+			Gyro_Turn=Gyro_Z;    //注意看【Gyro_Turn】           //更新转向角速度
 	  	}
 }
