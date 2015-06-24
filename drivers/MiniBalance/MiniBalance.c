@@ -24,15 +24,15 @@ void TIM1_UP_TIM16_IRQHandler(void)
   		Led_Flash(400);                                          //===LED闪烁;	
   		Get_battery_volt();                                      //===获取电池电压	          
 			key(100);                                                //===扫描按键状态
-		  Get_Angle(Way_Angle);	//输入哪种方法 输出Gyro_Balance Angle_Balance=angle Gyro_Turn=Gyro_Z 【姿态】
- 			Balance_Pwm = balance(Angle_Balance, Gyro_Balance);//输入 角度 角（？）速度  输出 对电机的PWM控制PID
- 			Velocity_Pwm= velocity(Encoder_Left,Encoder_Right);       //===速度环PID控制
+		  Get_Angle(Way_Angle);                                    //===更新姿态	
+ 			Balance_Pwm =balance(Angle_Balance,Gyro_Balance);        //===平衡PID控制	
+ 			Velocity_Pwm=velocity(Encoder_Left,Encoder_Right);       //===速度环PID控制
  	    Turn_Pwm    =turn(Encoder_Left,Encoder_Right,Gyro_Turn); //===转向环PID控制     
- 		  Moto1= Balance_Pwm +Velocity_Pwm-Turn_Pwm;                 //===计算左轮电机最终PWM
- 	  	Moto2= Balance_Pwm +Velocity_Pwm+Turn_Pwm;                 //===计算右轮电机最终PWM
+ 		  Moto1=Balance_Pwm+Velocity_Pwm-Turn_Pwm;                 //===计算左轮电机最终PWM
+ 	  	Moto2=Balance_Pwm+Velocity_Pwm+Turn_Pwm;                 //===计算右轮电机最终PWM
    		Xianfu_Pwm();                                            //===PWM限幅
       if(Turn_Off(Angle_Balance,Voltage)==0)                   //===如果不存在异常
-				Set_Pwm(Moto1,Moto2);                                    //===赋值给PWM寄存器    		
+ 			Set_Pwm(Moto1,Moto2);                                    //===赋值给PWM寄存器    		
 	}       
 } 
 
@@ -42,20 +42,12 @@ void TIM1_UP_TIM16_IRQHandler(void)
 返回  值：直立控制PWM
 作    者：平衡小车之家
 **************************************************************************/
-int balance(float Angle,float Gyro)//Y向 角偏差   
+int balance(float Angle,float Gyro)
 {  
    float Bias;
 	 int balance;
-	 static float eI[10]={0};
-	 static int sei=0,tempi=0,sumei=0;
-
-	 sei %= 10000;
-	 Bias=Angle+1;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
-	 eI[(sei++)%10]=Bias;
-   for(tempi=0;tempi<10;tempi++)
-			sumei += eI[tempi];
-	 balance=33*Bias+sumei*1.1+Gyro*0.13;//===计算平衡控制的电机PWM  PID控制 	 
-	 sumei=0;
+	 Bias=Angle+0;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
+	 balance=35*Bias+Gyro*0.125;//===计算平衡控制的电机PWM  PD控制 
 	 return balance;
 }
 
@@ -75,15 +67,16 @@ int velocity(int encoder_left,int encoder_right)
 	  else  Movement=0;	
    //=============速度PI控制器======================//	
 		Encoder_Least =Encoder_Left+Encoder_Right;     //===获取最新速度偏差
-		Encoder = Encoder_Least*0.3 + Encoder*0.7;	  //===一阶低通滤波器   0.3new + 0.7old	
+		Encoder *= 0.8;		                             //===一阶低通滤波器       
+		Encoder += Encoder_Least*0.2;	                 //===一阶低通滤波器    
 	  if(Turn_Off(Angle_Balance,Voltage)==0)         //为了防止积分影响用户体验，只有电机开启的时候才开始积分
 		{	
-			Encoder_Integral +=Encoder;                     //===积分出位移 积分时间：5ms
-			Encoder_Integral=Encoder_Integral-Movement;     //===接收遥控器数据，控制前进后退
+  	Encoder_Integral +=Encoder;                     //===积分出位移 积分时间：5ms
+		Encoder_Integral=Encoder_Integral-Movement;     //===接收遥控器数据，控制前进后退
 		}
 		if(Encoder_Integral>360000)  	Encoder_Integral=360000;          //===积分限幅
 		if(Encoder_Integral<-360000)	Encoder_Integral=-360000;         //===积分限幅	
-		Velocity = Encoder*4+Encoder_Integral/140;                        //===速度PI控制器	P=4 I= /140
+		Velocity=Encoder*4+Encoder_Integral/140;                        //===速度PI控制器	
 		if(Turn_Off(Angle_Balance,Voltage)==1)   Encoder_Integral=0;    //===电机关闭后清除积分
 	  return Velocity;
 }
@@ -107,7 +100,7 @@ int turn(int encoder_left,int encoder_right,float gyro)//转向控制
 			Turn_Convert=2000/Encoder_temp;
 			if(Turn_Convert<3)Turn_Convert=3;
 			if(Turn_Convert>10)Turn_Convert=10;
-		}
+		}	
 	  else
 		{
 			Turn_Convert=3;
@@ -115,20 +108,20 @@ int turn(int encoder_left,int encoder_right,float gyro)//转向控制
 			Encoder_temp=0;
 		}			
 		if(1==Flag_Left)	           Turn_Target+=Turn_Convert; //左转
-			else	if(1==Flag_Right)	     Turn_Target-=Turn_Convert; //右转
-							else Turn_Target=0;                                     //停止
+		else if(1==Flag_Right)	     Turn_Target-=Turn_Convert; //右转
+		else Turn_Target=0;                                     //停止
     if(Turn_Target>Turn_Amplitude)  Turn_Target=Turn_Amplitude;    //===转向速度限幅
 	  if(Turn_Target<-Turn_Amplitude) Turn_Target=-Turn_Amplitude;
   	//=============转向PD控制器=======================//
-		Turn_Bias=Encoder_Left-Encoder_Right;         //===计算转向速度偏差  
+		 Turn_Bias=Encoder_Left-Encoder_Right;         //===计算转向速度偏差  
 		if(Turn_Off(Angle_Balance,Voltage)==0)         //为了防止积分影响用户体验，只有电机开启的时候才开始积分
 		{	
-			Turn_Bias_Integral+=Turn_Bias;                //转向速度偏差积分得到转向偏差
-			Turn_Bias_Integral-=Turn_Target;              //获取遥控器数据
+		Turn_Bias_Integral+=Turn_Bias;                //转向速度偏差积分得到转向偏差
+		Turn_Bias_Integral-=Turn_Target;              //获取遥控器数据
 		}
 		if(Turn_Bias_Integral>1800)  	Turn_Bias_Integral=1800;          //===积分限幅
 		if(Turn_Bias_Integral<-1800)	Turn_Bias_Integral=-1800;         //===积分限幅	
-	  Turn=Turn_Bias_Integral*2+gyro/12;                              //===结合Z轴陀螺仪进行PD控制 I=2 P= /12
+	  Turn=Turn_Bias_Integral*2+gyro/12;                              //===结合Z轴陀螺仪进行PD控制
 	  return Turn;
 }
 
@@ -140,8 +133,8 @@ int turn(int encoder_left,int encoder_right,float gyro)//转向控制
 **************************************************************************/
 void Set_Pwm(int moto1,int moto2)
 {
-			if(moto1<0)			AIN1=1,			AIN2=0;
-			else 	          AIN1=0,			AIN2=1;
+			if(moto1<0)			AIN2=1,			AIN1=0;
+			else 	          AIN2=0,			AIN1=1;
 			PWMA=myabs(moto1);
 		  if(moto2<0)	BIN1=0,			BIN2=1;
 			else        BIN1=1,			BIN2=0;
@@ -227,10 +220,10 @@ void Get_Angle(u8 way)
 		  if(Accel_Z>32768) Accel_Z-=65536;    //数据类型转换
 			Gyro_Balance=-Gyro_Y;                                  //更新平衡角速度
 	   	Accel_Y=atan2(Accel_X,Accel_Z)*180/PI;                 //计算与地面的夹角	
-		  Gyro_Y=Gyro_Y/16.4;                                    //陀螺仪量程转换	      
+		  Gyro_Y=Gyro_Y/16.4;                                    //陀螺仪量程转换	
+      if(Way_Angle==2)		  	Kalman_Filter(Accel_Y,-Gyro_Y);//卡尔曼滤波	
+			else if(Way_Angle==3)   Yijielvbo(Accel_Y,-Gyro_Y);    //互补滤波
 	    Angle_Balance=angle;                                   //更新平衡倾角
 			Gyro_Turn=Gyro_Z;                                      //更新转向角速度
-			if(Way_Angle==2)		  	Kalman_Filter(Accel_Y,-Gyro_Y);//卡尔曼滤波	
-				else if(Way_Angle==3)   Yijielvbo(Accel_Y,-Gyro_Y);    //互补滤波
 	  	}
 }
