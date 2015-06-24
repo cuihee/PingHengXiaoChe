@@ -32,7 +32,7 @@ void TIM1_UP_TIM16_IRQHandler(void)
  	  	Moto2=Balance_Pwm+Velocity_Pwm+Turn_Pwm;                 //===计算右轮电机最终PWM
    		Xianfu_Pwm();                                            //===PWM限幅
       if(Turn_Off(Angle_Balance,Voltage)==0)                   //===如果不存在异常
-				Set_Pwm(Moto1,Moto2);                                    //===赋值给PWM寄存器    		
+ 			Set_Pwm(Moto1,Moto2);                                    //===赋值给PWM寄存器    		
 	}       
 } 
 
@@ -42,20 +42,12 @@ void TIM1_UP_TIM16_IRQHandler(void)
 返回  值：直立控制PWM
 作    者：平衡小车之家
 **************************************************************************/
-int balance(float Angle,float Gyro)//Y向 角偏差   
+int balance(float Angle,float Gyro)
 {  
    float Bias;
 	 int balance;
-	 static float eI[10]={0};
-	 static int sei=0,tempi=0,sumei=0;
-
-	 sei %= 10000;
-	 Bias=Angle+1;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
-	 eI[(sei++)%10]=Bias;
-   for(tempi=0;tempi<10;tempi++)
-			sumei += eI[tempi];
-	 balance=30*Bias+Gyro*0.125+sumei*1.05;//===计算平衡控制的电机PWM  PD控制 
-	 sumei=0;
+	 Bias=Angle+0;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
+	 balance=35*Bias+Gyro*0.125;//===计算平衡控制的电机PWM  PD控制 
 	 return balance;
 }
 

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\..\..\HEX_OUTPUT\STM32100E-EVAL.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\..\HEX_OUTPUT\STM32100E-EVAL.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 24]: Last Updated: Tue Jun 23 15:45:51 2015
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Fri May 15 22:54:22 2015
 <BR><P>
 <H3>Maximum Stack Usage =        296 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -314,7 +314,6 @@ Global Symbols
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_DMP
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turn
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;balance
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kalman_Filter
 <LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_frsub
 </UL>
@@ -427,7 +426,6 @@ Global Symbols
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_DMP
 <LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asin
 <LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;velocity
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;balance
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_Angle
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Yijielvbo
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_battery_volt
@@ -470,7 +468,6 @@ Global Symbols
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_self_test
 <LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;accel_self_test
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turn
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;balance
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;run_self_test
 </UL>
 
@@ -492,7 +489,6 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;velocity
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;balance
 </UL>
 
 <P><STRONG><a name="[5c]"></a>__aeabi_ui2d</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, dfltui.o(.text))
@@ -506,7 +502,6 @@ Global Symbols
 <P><STRONG><a name="[aa]"></a>__aeabi_f2iz</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, ffixi.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_Temperature
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turn
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;balance
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;run_self_test
 </UL>
 
@@ -1151,7 +1146,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[a5]"></a>Read_DMP</STRONG> (Thumb, 170 bytes, Stack size 56 bytes, mpu6050.o(i.Read_DMP))
-<BR><BR>[Stack]<UL><LI>Max Depth = 264<LI>Call Chain = Read_DMP &rArr; asin &rArr; __kernel_poly &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
+<BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = Read_DMP &rArr; dmp_read_fifo &rArr; mpu_read_fifo_stream &rArr; i2cRead &rArr; IIC_Read_Byte &rArr; IIC_NAck
 </UL>
 <BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dmp_read_fifo
@@ -1356,8 +1351,8 @@ Global Symbols
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrt
 </UL>
 
-<P><STRONG><a name="[a8]"></a>asin</STRONG> (Thumb, 584 bytes, Stack size 96 bytes, asin.o(i.asin))
-<BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = asin &rArr; __kernel_poly &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
+<P><STRONG><a name="[a8]"></a>asin</STRONG> (Thumb, 584 bytes, Stack size 56 bytes, asin.o(i.asin))
+<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = asin &rArr; __kernel_poly &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
@@ -1402,18 +1397,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_Angle
 </UL>
 
-<P><STRONG><a name="[b1]"></a>balance</STRONG> (Thumb, 156 bytes, Stack size 32 bytes, minibalance.o(i.balance))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = balance &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
+<P><STRONG><a name="[b1]"></a>balance</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, minibalance.o(i.balance))
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = balance &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; _double_round
 </UL>
-<BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
-<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
+<BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbn
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM1_UP_TIM16_IRQHandler
@@ -1971,7 +1961,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM1_UP_TIM16_IRQHandler
 </UL>
 
-<P><STRONG><a name="[c4]"></a>sqrt</STRONG> (Thumb, 78 bytes, Stack size 24 bytes, sqrt.o(i.sqrt))
+<P><STRONG><a name="[c4]"></a>sqrt</STRONG> (Thumb, 76 bytes, Stack size 24 bytes, sqrt.o(i.sqrt))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = sqrt &rArr; _dsqrt &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno

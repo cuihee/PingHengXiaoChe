@@ -18,7 +18,7 @@ void oled_show(void)
 	  Count=0;
 		OLED_Display_On();  //显示屏打开
 		//=============显示滤波器=======================//	
-		                      OLED_ShowString(00,0,"Alg:");
+		                      OLED_ShowString(00,0,"WAY-");
 		                      OLED_ShowNumber(30,0, Way_Angle,1,12);
 	       if(Way_Angle==1)	OLED_ShowString(45,0,"DMP");
 		else if(Way_Angle==2)	OLED_ShowString(45,0,"Kalman");
