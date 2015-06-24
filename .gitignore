@@ -1,0 +1,15 @@
+!*.gitignore
+!*.c
+!*.h
+!*.hex
+!*.txt
+
+*.crf
+*.d
+*.o
+*.axf
+*.htm
+*.lnp
+*.plg
+*.sct
+*.tra
