@@ -1,8 +1,10 @@
+
 !*.gitignore
 !*.c
 !*.h
 !*.hex
 !*.txt
+
 
 *.crf
 *.d
@@ -13,3 +15,6 @@
 *.plg
 *.sct
 *.tra
+*.cuihe
+*.uvopt
+*.bak
