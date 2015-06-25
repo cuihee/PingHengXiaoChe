@@ -1462,7 +1462,7 @@ int mpu_set_compass_sample_rate(unsigned short rate)
 int mpu_get_gyro_sens(float *sens)
 {
     switch (st.chip_cfg.gyro_fsr) {
-    case INV_FSR_250DPS:
+    case INV_FSR_250DPS://最快的角速度，
         sens[0] = 131.f;
         break;
     case INV_FSR_500DPS:

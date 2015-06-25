@@ -10,7 +10,7 @@ int Encoder_Left,Encoder_Right;             //左右编码器的脉冲计数
 int Moto1,Moto2;                            //电机PWM变量 应是Motor的 向Moto致敬	
 int Temperature;                            //显示温度
 int Voltage;                                //电池电压采样相关的变量
-float Angle_Balance,Gyro_Balance,Gyro_Turn; //平衡倾角 平衡陀螺仪 转向陀螺仪
+float Angle_Balance,Gyro_Balance,Gyro_Turn,Gyro_AlarmMove; //平衡倾角 平衡陀螺仪 转向陀螺仪 不可能的陀螺仪运动
 float Show_Data_Mb;                         //全局显示变量，用于显示需要查看的数据
 
 /**************************************************************************
@@ -44,7 +44,8 @@ int main(void)
 					Read_DMP();                      //===读取角速度和倾角
 					Angle_Balance=Pitch;             //===更新平衡倾角
 					Gyro_Balance=gyro[1];            //===更新平衡角速度
-					Gyro_Turn=gyro[2];               //===更新转向角速度
+					Gyro_Turn=gyro[2];               //===更新转向角速度，，，剩下一个角速度是在轮轴与竖直面内（不会转的）
+					Gyro_AlarmMove = gyro[3];
 				}
 				if(Flag_Stop==1||Way_Angle>1)      //===电机关闭后或者没有使用DMP时，开启上位机监控
 				{

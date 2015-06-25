@@ -71,11 +71,12 @@ static void run_self_test(void)
          */
         float sens;
         unsigned short accel_sens;
-        mpu_get_gyro_sens(&sens);
+        mpu_get_gyro_sens(&sens);//INV_FSR_250DPSʱsens=131.f
         gyro[0] = (long)(gyro[0] * sens);
         gyro[1] = (long)(gyro[1] * sens);
         gyro[2] = (long)(gyro[2] * sens);
         dmp_set_gyro_bias(gyro);
+			
         mpu_get_accel_sens(&accel_sens);
         accel[0] *= accel_sens;
         accel[1] *= accel_sens;
