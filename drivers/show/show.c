@@ -50,8 +50,9 @@ void oled_show(void)
 		 if(Voltage%100<10) 	OLED_ShowNumber(62,40,0,2,12);
 		//=============ÏÔÊ¾½Ç¶È=======================//
 		                      OLED_ShowString(0,50,"Angle");
-		if(Angle_Balance<0)		OLED_ShowNumber(45,50,Angle_Balance+360,3,12);
-		else					        OLED_ShowNumber(45,50,Angle_Balance,3,12);
+		if(Angle_Balance<0)		OLED_ShowString(45,50,"-"),
+													OLED_ShowNumber(45,50,0-Angle_Balance,4,12);
+		else					        OLED_ShowNumber(45,50,Angle_Balance,4,12);
 		//=============Ë¢ÐÂ=======================//
 		OLED_Refresh_Gram();	
 	}
