@@ -4,3 +4,7 @@
 !*.h
 !*.hex
 !*.txt
+*.o
+*.bak
+*.d
+*.crf
