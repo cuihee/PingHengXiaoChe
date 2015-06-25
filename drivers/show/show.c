@@ -54,12 +54,12 @@ void oled_show(void)
 		 if(Voltage%100<10) 	OLED_ShowNumber(62,30,0,2,12);
 		//=============显示角度=======================//
 		                      OLED_ShowString(01,40,"Angle");
-		if(Angle_Balance<0)		OLED_ShowString(45,40,"-"),
-													OLED_ShowNumber(45,40,0-Angle_Balance,4,12);
-		else					        OLED_ShowString(45,40,"+"),
-													OLED_ShowNumber(45,40,Angle_Balance,4,12);
+		if(Angle_Balance<0)		OLED_ShowString(46,40,"-"),
+													OLED_ShowNumber(54,40,0-Angle_Balance,3,12);
+		else					        OLED_ShowString(46,40,"+"),
+													OLED_ShowNumber(54,40,Angle_Balance,3,12);
 		//=============刷新=======================//
-		OLED_Refresh_Gram();	
+		OLED_Refresh_Gram();
 	}
 /**************************************************************************
 函数功能：虚拟示波器往上位机发送数据 关闭显示屏

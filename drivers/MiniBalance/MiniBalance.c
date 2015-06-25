@@ -46,7 +46,7 @@ int balance(float Angle,float Gyro)
 {  
    float Bias;
 	 int balance;
-	 Bias=Angle+0;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
+	 Bias=Angle+1;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
 	 balance=35*Bias+Gyro*0.125;//===计算平衡控制的电机PWM  PD控制 
 	 return balance;
 }

@@ -74,7 +74,16 @@ u16 Get_Adc(u8 ch)
 **************************************************************************/
 void Get_battery_volt(void)   
 {  
-	Voltage=Get_Adc(4)*3.3*11.5*100/1.5/4096;		
+	static int Voltage_temp =9999;
+	Voltage=Get_Adc(4)*3.3*11.5*100/1.5/4096;
+	if (Voltage<Voltage_temp)
+	{
+		Voltage_temp = Voltage;
+	}
+	else
+	{
+		Voltage = Voltage_temp;
+	}
 }
 
 
