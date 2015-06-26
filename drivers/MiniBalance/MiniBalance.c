@@ -47,14 +47,17 @@ int balance(float Angle,float Gyro)
    float Bias;
 	 int balance;
 	 static float eI[10]={0}, ba_sum=0;
-	 static int ba_i=0,ba_ii=0;
+	 static int ba_i=0, ba_ii=0, balance_old;
 	 ba_i %= 20000;
 	 Bias=Angle+0.5;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
 	 eI[(ba_i++)%3] = Bias;
 	 for (ba_ii=0; ba_ii<3; ba_ii++)
 			ba_sum += eI[ba_ii];
 	 ba_sum = 0;
-	 balance=35*Bias + ba_sum*0.2 + Gyro*(0.18);//===计算平衡控制的电机PWM  PID控制 	 
+	 balance=42*Bias + ba_sum*0.2 + Gyro*0.17;//===计算平衡控制的电机PWM  PID控制 	 
+	 balance = balance_old*0.15 + balance*0.85;	 
+	 if (myabs(Bias)<1) balance = 0;
+	 balance_old = balance;
 	 return balance;
 }
 
@@ -62,18 +65,18 @@ int balance(float Angle,float Gyro)
 函数功能：速度PI控制
 入口参数：左轮编码器、右轮编码器
 返回  值：速度控制PWM
-作    者：平衡小车之家
+作    者： 
 **************************************************************************/
 int velocity(int encoder_left,int encoder_right)
 {  
-	  static int Velocity,Encoder_Least,Encoder,Movement;
+	  static int Velocity, Encoder_Least, Encoder,Movement;
 	  static int Encoder_Integral;
 	  //=============遥控前进后退部分=======================//
 		if(1==Flag_Qian)	Movement=-900;	             //===如果前进标志位置1 位移为负
 		else if(1==Flag_Hou)	  Movement=900;          //===如果后退标志位置1 位移为正
 	  else  Movement=0;	
    //=============速度PI控制器======================//	
-		Encoder_Least =Encoder_Left+Encoder_Right;     //===获取最新速度偏差
+		Encoder_Least = Encoder_Left + Encoder_Right;     //===获取最新速度偏差
 		Encoder *= 0.8;		                             //===一阶低通滤波器       
 		Encoder += Encoder_Least*0.2;	                 //===一阶低通滤波器    
 	  if(Turn_Off(Angle_Balance,Voltage)==0)         //为了防止积分影响用户体验，只有电机开启的时候才开始积分
