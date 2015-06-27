@@ -54,9 +54,9 @@ int balance(float Angle,float Gyro)
 	 for (ba_ii=0; ba_ii<3; ba_ii++)
 			ba_sum += eI[ba_ii];
 	 ba_sum = 0;
-	 balance=42*Bias + ba_sum*0.2 + Gyro*0.17;//===计算平衡控制的电机PWM  PID控制 	 
+	 //balance=42*Bias + ba_sum*0.2 + Gyro*0.17;//===计算平衡控制的电机PWM  PID控制 	 
 	 //balance = balance_old*0.15 + balance*0.85;	 
-	 if (myabs(Bias)<1) balance = 0;
+	 balance=35*Bias + Gyro*0.125;//===计算平衡控制的电机PWM  PID控制 	 
 	 balance_old = balance;
 	 return balance;
 }
@@ -65,7 +65,6 @@ int balance(float Angle,float Gyro)
 函数功能：速度PI控制
 入口参数：左轮编码器、右轮编码器
 返回  值：速度控制PWM
-作    者： 
 **************************************************************************/
 int velocity(int encoder_left,int encoder_right)
 {  
@@ -95,7 +94,6 @@ int velocity(int encoder_left,int encoder_right)
 函数功能：转向PD控制
 入口参数：左轮编码器、右轮编码器、Z轴陀螺仪
 返回  值：转向控制PWM
-作    者：平衡小车之家
 **************************************************************************/
 int turn(int encoder_left,int encoder_right,float gyro)//转向控制
 {

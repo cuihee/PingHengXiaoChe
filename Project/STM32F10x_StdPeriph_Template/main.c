@@ -1,8 +1,8 @@
 #include "main.h"
-u8 	Way_Angle=1;                             //获取角度的算法，1：四元数  2：卡尔曼  3：互补滤波 （有的6050使用DMP时，需要开机后不停摇晃小车10S左右，等待数据稳定）
+u8 	Way_Angle=2;                             //获取角度的算法，1：四元数  2：卡尔曼  3：互补滤波 （有的6050使用DMP时，需要开机后不停摇晃小车10S左右，等待数据稳定）
 u8 	Flag_Qian,Flag_Hou,Flag_Left,Flag_Right; //蓝牙遥控相关的变量
-u8 	Flag_Stop=1, 														//停止标志位和
-		Flag_Show=1;                						// 显示标志位 默认停止 显示打开
+u8 	Flag_Stop=1;													//停止标志位和
+u8	Flag_Show=1;                						// 显示标志位 默认停止 显示打开
 int Encoder_Left,Encoder_Right;             //电机测速
 int Moto1,Moto2;                            //电机PWM变量 
 int Temperature;                            //温度
