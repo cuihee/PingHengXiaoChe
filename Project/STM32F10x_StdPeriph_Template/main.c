@@ -1,22 +1,15 @@
 #include "main.h"
-/**************************************************************************
-作者：平衡小车之家 
-淘宝店铺：http://shop114407458.taobao.com/
-**************************************************************************/
-u8 Way_Angle=2;                             //获取角度的算法，1：四元数  2：卡尔曼  3：互补滤波 （有的6050使用DMP时，需要开机后不停摇晃小车10S左右，等待数据稳定）
-u8 Flag_Qian,Flag_Hou,Flag_Left,Flag_Right; //蓝牙遥控相关的变量
-u8 Flag_Stop=1,Flag_Show=1;                 //停止标志位和 显示标志位 默认停止 显示打开
-int Encoder_Left,Encoder_Right;             //左右编码器的脉冲计数
-int Moto1,Moto2;                            //电机PWM变量 应是Motor的 向Moto致敬	
-int Temperature;                            //显示温度
-int Voltage;                                //电池电压采样相关的变量
+u8 	Way_Angle=1;                             //获取角度的算法，1：四元数  2：卡尔曼  3：互补滤波 （有的6050使用DMP时，需要开机后不停摇晃小车10S左右，等待数据稳定）
+u8 	Flag_Qian,Flag_Hou,Flag_Left,Flag_Right; //蓝牙遥控相关的变量
+u8 	Flag_Stop=1, 														//停止标志位和
+		Flag_Show=1;                						// 显示标志位 默认停止 显示打开
+int Encoder_Left,Encoder_Right;             //电机测速
+int Moto1,Moto2;                            //电机PWM变量 
+int Temperature;                            //温度
+int Voltage;                                //电压采样
 float Angle_Balance,Gyro_Balance,Gyro_Turn,Gyro_AlarmMove; //平衡倾角 平衡陀螺仪 转向陀螺仪 不可能的陀螺仪运动
 float Show_Data_Mb;                         //全局显示变量，用于显示需要查看的数据
 
-/**************************************************************************
-函数功能：主函数 初始化系统和外设
-作    者：平衡小车之家
-**************************************************************************/
 int main(void)
 {
 	SystemInit();                   //=====系统初始化
@@ -46,12 +39,14 @@ int main(void)
 					Gyro_Balance=gyro[1];            //===更新平衡角速度
 					Gyro_Turn=gyro[2];               //===更新转向角速度，，，剩下一个角速度是在轮轴与竖直面内（不会转的）
 					Gyro_AlarmMove = gyro[3];
-				}
-				if(Flag_Stop==1||Way_Angle>1)      //===电机关闭后或者没有使用DMP时，开启上位机监控
-				{
-					Temperature=Read_Temperature();  //===读取MPU6050内置温度传感器数据，近似表示主板温度。
+					Temperature = Read_Temperature();  //===读取MPU6050内置温度传感器数据，近似表示主板温度。
 					if(1==Flag_Show)		oled_show(); //===显示屏打开
-					else	              DataScope(); //===显示屏关闭 打开上位机	（显示屏和上位机不能同时使用，好像也没有必要。。）		
+				}
+				if(Flag_Stop==1||Way_Angle>1)   
+				{
+					Temperature = Read_Temperature();  //===读取MPU6050内置温度传感器数据，近似表示主板温度。
+					if(1==Flag_Show)		oled_show(); //===显示屏打开
+						//else	              DataScope(); //===显示屏关闭 打开上位机	（显示屏和上位机不能同时使用，好像也没有必要。。）		
 				}
 	}	
 }

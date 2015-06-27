@@ -1,18 +1,9 @@
 #include "show.h"
 #include "MiniBalance.h"
-/**************************************************************************
-作者：平衡小车之家 
-淘宝店铺：http://shop114407458.taobao.com/
-**************************************************************************/
 unsigned char i;          //计数变量
 unsigned char Send_Count; //串口需要发送的数据个数
-/**************************************************************************
-函数功能：OLED显示
-入口参数：无
-返回  值：无
-作    者：平衡小车之家
-**************************************************************************/
 static u32 Count;
+
 void oled_show(void)
 {
 	  Count=0;
@@ -41,10 +32,10 @@ void oled_show(void)
 		else                 	OLED_ShowString(47,20,"+"),
 		                      OLED_ShowNumber(56,20, Encoder_Left,3,12);
   	//=============显示编码器2=======================//				                      
-		if(Encoder_Right<0)		OLED_ShowString(84,20,"-"),
-		                      OLED_ShowNumber(92,20,-Encoder_Right,3,12);
-		else               		OLED_ShowString(84,20,"+"),
-		                      OLED_ShowNumber(92,20,Encoder_Right,3,12);	
+		if(Encoder_Right<0)		OLED_ShowString(85,20,"-"),
+		                      OLED_ShowNumber(93,20,-Encoder_Right,3,12);
+		else               		OLED_ShowString(85,20,"+"),
+		                      OLED_ShowNumber(93,20,Encoder_Right,3,12);	
 		//=============显示电压=======================//
 		                      OLED_ShowString(01,30,"Volta");
 		                      OLED_ShowString(58,30,".");
@@ -61,12 +52,7 @@ void oled_show(void)
 		//=============刷新=======================//
 		OLED_Refresh_Gram();
 	}
-/**************************************************************************
-函数功能：虚拟示波器往上位机发送数据 关闭显示屏
-入口参数：无
-返回  值：无
-作    者：平衡小车之家
-**************************************************************************/
+	
 void DataScope(void)
 {   
 	  if(++Count==1)

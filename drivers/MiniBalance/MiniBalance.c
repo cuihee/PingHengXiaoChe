@@ -135,28 +135,16 @@ int turn(int encoder_left,int encoder_right,float gyro)//转向控制
 	  return Turn;
 }
 
-/**************************************************************************
-函数功能：赋值给PWM寄存器
-入口参数：左轮PWM、右轮PWM
-返回  值：无
-作    者：平衡小车之家
-**************************************************************************/
 void Set_Pwm(int moto1,int moto2)
 {
 			if(moto1<0)			AIN2=1,			AIN1=0;
 			else 	          AIN2=0,			AIN1=1;
-			PWMA=myabs(moto1);
+			PWMA=myabs(moto1);//在timer.h里面定义了寄存器
 		  if(moto2<0)	BIN1=0,			BIN2=1;
 			else        BIN1=1,			BIN2=0;
 			PWMB=myabs(moto2);	
 }
-/**************************************************************************
-函数功能：读取编码器的数据并进行数据类型转换
-入口参数：无
-返回  值：无
-作    者：平衡小车之家
-**************************************************************************/
-void readEncoder(void)
+void readEncoder(void)//读取转速
 {
 	  u16 Encoder_L,Encoder_R;       //===左右编码器的脉冲计数
 		Encoder_R = TIM4 -> CNT;       //===获取正交解码1数据	
@@ -168,12 +156,6 @@ void readEncoder(void)
 	  if(Encoder_R>32768)  Encoder_Right=Encoder_R-65000; else  Encoder_Right=Encoder_R;//===数据类型转换
 }
 
-/**************************************************************************
-函数功能：限制PWM赋值 
-入口参数：无
-返回  值：无
-作    者：平衡小车之家
-**************************************************************************/
 void Xianfu_Pwm(void)
 {	
 	  int Amplitude=3500;    //===PWM满幅是3600 限制在3500
@@ -188,7 +170,6 @@ void Xianfu_Pwm(void)
 函数功能：异常关闭电机
 入口参数：倾角和电压
 返回  值：1：异常  0：正常
-作    者：平衡小车之家
 **************************************************************************/
 u8 Turn_Off(float angle, int voltage)
 {
@@ -196,7 +177,7 @@ u8 Turn_Off(float angle, int voltage)
 			if(angle<-45||angle>45||1==Flag_Stop||Voltage<1110||Temperature>600)//===电压低于11.1V 关闭电机
 			{	                                                 //===倾角大于45度关闭电机
       temp=1;                                            //===Flag_Stop置1关闭电机
-			AIN1=0;                                            //===可自行增加主板温度过高时关闭电机
+			AIN1=0;                                            
 			AIN2=0;
 			BIN1=0;
 			BIN2=0;
@@ -209,8 +190,7 @@ u8 Turn_Off(float angle, int voltage)
 /**************************************************************************
 函数功能：获取角度
 入口参数：获取角度的算法 1：无  2：卡尔曼 3：互补滤波
-返回  值：无
-作    者：平衡小车之家
+返回  值：Gyro_Y轴角速度	Gyro_Turn转向角速度	Angle_Balance平衡倾角	Gyro_Balance平衡角速度
 **************************************************************************/
 void Get_Angle(u8 way)
 { 
@@ -231,8 +211,8 @@ void Get_Angle(u8 way)
 			Gyro_Balance=-Gyro_Y;                                  //更新平衡角速度
 	   	Accel_Y=atan2(Accel_X,Accel_Z)*180/PI;                 //计算与地面的夹角	
 		  Gyro_Y=Gyro_Y/16.4;                                    //陀螺仪量程转换	
-      if(Way_Angle==2)		  	Kalman_Filter(Accel_Y,-Gyro_Y);//卡尔曼滤波	
-			else if(Way_Angle==3)   Yijielvbo(Accel_Y,-Gyro_Y);    //互补滤波
+      if(Way_Angle==2)		  	Kalman_Filter(Accel_Y,-Gyro_Y);//卡尔曼滤波	Y轴加速度 Y轴角速度
+				else if(Way_Angle==3)   Yijielvbo(Accel_Y,-Gyro_Y);    //互补滤波 Y轴加速度 Y轴角速度
 	    Angle_Balance=angle;                                   //更新平衡倾角
 			Gyro_Turn=Gyro_Z;                                      //更新转向角速度
 	  	}
