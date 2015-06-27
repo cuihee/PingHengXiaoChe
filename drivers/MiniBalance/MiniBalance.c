@@ -55,7 +55,7 @@ int balance(float Angle,float Gyro)
 			ba_sum += eI[ba_ii];
 	 ba_sum = 0;
 	 balance=42*Bias + ba_sum*0.2 + Gyro*0.17;//===计算平衡控制的电机PWM  PID控制 	 
-	 balance = balance_old*0.15 + balance*0.85;	 
+	 //balance = balance_old*0.15 + balance*0.85;	 
 	 if (myabs(Bias)<1) balance = 0;
 	 balance_old = balance;
 	 return balance;
@@ -193,8 +193,8 @@ void Xianfu_Pwm(void)
 u8 Turn_Off(float angle, int voltage)
 {
 	    u8 temp;
-			if(angle<-40||angle>40||1==Flag_Stop||Voltage<1110)//===电压低于11.1V 关闭电机
-			{	                                                 //===倾角大于40度关闭电机
+			if(angle<-45||angle>45||1==Flag_Stop||Voltage<1110||Temperature>600)//===电压低于11.1V 关闭电机
+			{	                                                 //===倾角大于45度关闭电机
       temp=1;                                            //===Flag_Stop置1关闭电机
 			AIN1=0;                                            //===可自行增加主板温度过高时关闭电机
 			AIN2=0;

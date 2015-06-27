@@ -1,10 +1,9 @@
-
+*.o
+*.bak
+*.d
+*.crf
 !*.gitignore
 !*.c
 !*.h
 !*.hex
 !*.txt
-*.o
-*.bak
-*.d
-*.crf
