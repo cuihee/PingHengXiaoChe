@@ -42,7 +42,7 @@ int balance(float Angle,float Gyro)
 	 if (Way_Angle>1)
 		balance=40*Bias + Gyro*0.13;//===计算平衡控制的电机PWM  PID控制 	
 	 else //DMP
-		balance = 35*Bias + Gyro*0.125;
+		balance = 33*Bias + Gyro*0.15;
 	 return balance;
 }
 

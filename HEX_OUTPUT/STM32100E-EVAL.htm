@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\..\..\HEX_OUTPUT\STM32100E-EVAL.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\..\HEX_OUTPUT\STM32100E-EVAL.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 24]: Last Updated: Mon Jun 29 20:23:10 2015
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 24]: Last Updated: Mon Jun 29 21:38:15 2015
 <BR><P>
 <H3>Maximum Stack Usage =        296 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -450,7 +450,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __ARM_scalbn
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asin
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;balance
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_battery_volt
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan
@@ -1369,13 +1368,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_Angle
 </UL>
 
-<P><STRONG><a name="[ad]"></a>balance</STRONG> (Thumb, 84 bytes, Stack size 16 bytes, minibalance.o(i.balance))
+<P><STRONG><a name="[ad]"></a>balance</STRONG> (Thumb, 86 bytes, Stack size 16 bytes, minibalance.o(i.balance))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = balance &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbn
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd

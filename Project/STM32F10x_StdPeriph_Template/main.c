@@ -18,7 +18,7 @@ int main(void)
 	uart3_init(72,9600);            //=====串口3初始化 波特率：9600
 	JTAG_Set(JTAG_SWD_DISABLE);     //=====关闭JTAG接口
 	JTAG_Set(SWD_ENABLE);           //=====打开SWD接口 可以利用主板的SWD接口调试
-  led_init();                     //=====LED初始化
+  	led_init();                     //=====LED初始化
 	KEY_Init();                     //=====按键初始化
 	Adc_Init();	                    //=====初始化ADC模块
 	MiniBalance_PWM_Init(3599,0);   //=====初始化PWM 20KHZ 高频可以防止电机低频时的尖叫声
@@ -26,8 +26,8 @@ int main(void)
 	Encoder_Init();                 //=====初始化编码器1
 	Encoder_Init2();	              //=====初始化编码器2
 	delay_ms(200);                  //=====延时等待稳定		
-  IIC_Init();                     //=====模拟IIC初始化
-  MPU6050_initialize();           //=====MPU6050初始化	
+  	IIC_Init();                     //=====模拟IIC初始化
+  	MPU6050_initialize();           //=====MPU6050初始化	
 	DMP_Init();                     //=====DMP初始化
 	Timer1_Init(49,7199);           //=====5MS进一次中断服务函数 中断服务函数在minibalance.c里面
   while(1)

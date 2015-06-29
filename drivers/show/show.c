@@ -49,6 +49,9 @@ void oled_show(void)
 													OLED_ShowNumber(54,40,0-Angle_Balance,3,12);
 		else					        OLED_ShowString(46,40,"+"),
 													OLED_ShowNumber(54,40,Angle_Balance,3,12);
+		//=============ÆäËû======================//
+													
+		
 		//=============Ë¢ÐÂ=======================//
 		OLED_Refresh_Gram();
 	}

@@ -1,4 +1,4 @@
-
+//#include "main.c"
 #include "MPU6050.h"
 #include "IOI2C.h"
 #include "LED.h"
@@ -16,7 +16,7 @@
 #define q30  1073741824.0f
 short gyro[3], accel[3], sensors;
 float Pitch; 
-float q0=1.0f,q1=0.0f,q2=0.0f,q3=0.0f;
+float q0=1.0f,q1=0.0f,q2=0.0f,q3=0.0f;  //ËÄÔªÊýDMP
 static signed char gyro_orientation[9] = {-1, 0, 0,
                                            0,-1, 0,
                                            0, 0, 1};
