@@ -11,3 +11,7 @@
 Project/STM32F10x_StdPeriph_Template/MDK-ARM/Project.uvgui.cuihe
 *.cuihe
 *.bak
+*.o
+*.axf
+HEX_OUTPUT/STM32100E-EVAL.htm
+*.tra

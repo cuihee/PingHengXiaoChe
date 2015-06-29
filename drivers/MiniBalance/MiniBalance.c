@@ -3,18 +3,11 @@
 #include "led.h"
 #include "mpu6050.h"
 #define PI 3.14159265
-/**************************************************************************
-作者：平衡小车之家 
-淘宝店铺：http://shop114407458.taobao.com/
-**************************************************************************/
+int Balance_Pwm,Velocity_Pwm,Turn_Pwm;
 
 /**************************************************************************
 函数功能：5MS定时中断函数 5MS控制周期
-入口参数：无
-返回  值：无
-作    者：平衡小车之家
 **************************************************************************/
-int Balance_Pwm,Velocity_Pwm,Turn_Pwm;
 void TIM1_UP_TIM16_IRQHandler(void)  
 {    
 	if(TIM1->SR&0X0001)//5ms定时中断
@@ -37,10 +30,9 @@ void TIM1_UP_TIM16_IRQHandler(void)
 } 
 
 /**************************************************************************
-函数功能：直立PD控制
+函数功能：直立控制
 入口参数：角度、角速度
 返回  值：直立控制PWM
-作    者：平衡小车之家
 **************************************************************************/
 int balance(float Angle,float Gyro)
 {  
@@ -50,14 +42,14 @@ int balance(float Angle,float Gyro)
 	 static int ba_i=0, ba_ii=0, balance_old;
 	 ba_i %= 20000;
 	 Bias=Angle+0.5;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
-	 eI[(ba_i++)%3] = Bias;
-	 for (ba_ii=0; ba_ii<3; ba_ii++)
+	 eI[(ba_i++)%4] = Bias;
+	 for (ba_ii=0; ba_ii<4; ba_ii++)
 			ba_sum += eI[ba_ii];
-	 ba_sum = 0;
+	 //ba_sum = 0;
 	 //balance=42*Bias + ba_sum*0.2 + Gyro*0.17;//===计算平衡控制的电机PWM  PID控制 	 
 	 //balance = balance_old*0.15 + balance*0.85;	 
-	 balance=35*Bias + Gyro*0.125;//===计算平衡控制的电机PWM  PID控制 	 
-	 balance_old = balance;
+	 balance=35*Bias + Gyro*0.13 + ba_sum*0.05;//===计算平衡控制的电机PWM  PID控制 	 
+	 balance_old = balance;//mei yong
 	 return balance;
 }
 
