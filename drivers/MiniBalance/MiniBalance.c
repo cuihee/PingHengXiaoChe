@@ -45,10 +45,10 @@ int balance(float Angle,float Gyro)
 	 eI[(ba_i++)%4] = Bias;
 	 for (ba_ii=0; ba_ii<4; ba_ii++)
 			ba_sum += eI[ba_ii];
-	 //ba_sum = 0;
+	 ba_sum = 0;
 	 //balance=42*Bias + ba_sum*0.2 + Gyro*0.17;//===计算平衡控制的电机PWM  PID控制 	 
 	 //balance = balance_old*0.15 + balance*0.85;	 
-	 balance=35*Bias + Gyro*0.13 + ba_sum*0.05;//===计算平衡控制的电机PWM  PID控制 	 
+	 balance=40*Bias + Gyro*0.13 + ba_sum*0.05;//===计算平衡控制的电机PWM  PID控制 	 
 	 balance_old = balance;//mei yong
 	 return balance;
 }
