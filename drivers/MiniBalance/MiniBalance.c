@@ -37,19 +37,12 @@ void TIM1_UP_TIM16_IRQHandler(void)
 int balance(float Angle,float Gyro)
 {  
    float Bias;
-	 int balance;
-	 static float eI[10]={0}, ba_sum=0;
-	 static int ba_i=0, ba_ii=0, balance_old;
-	 ba_i %= 20000;
+	 int balance;	 
 	 Bias=Angle+0.5;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
-	 eI[(ba_i++)%4] = Bias;
-	 for (ba_ii=0; ba_ii<4; ba_ii++)
-			ba_sum += eI[ba_ii];
-	 ba_sum = 0;
-	 //balance=42*Bias + ba_sum*0.2 + Gyro*0.17;//===计算平衡控制的电机PWM  PID控制 	 
-	 //balance = balance_old*0.15 + balance*0.85;	 
-	 balance=40*Bias + Gyro*0.13 + ba_sum*0.05;//===计算平衡控制的电机PWM  PID控制 	 
-	 balance_old = balance;//mei yong
+	 if (Way_Angle>1)
+		balance=40*Bias + Gyro*0.13;//===计算平衡控制的电机PWM  PID控制 	
+	 else //DMP
+		balance = 35*Bias + Gyro*0.125;
 	 return balance;
 }
 

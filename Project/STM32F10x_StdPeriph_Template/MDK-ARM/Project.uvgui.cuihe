@@ -1383,9 +1383,9 @@
       </Doc>
       <Doc>
         <Name>..\..\..\drivers\MiniBalance\MiniBalance.c</Name>
-        <ColumnNumber>13</ColumnNumber>
-        <TopLine>34</TopLine>
-        <CurrentLine>51</CurrentLine>
+        <ColumnNumber>35</ColumnNumber>
+        <TopLine>31</TopLine>
+        <CurrentLine>45</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
