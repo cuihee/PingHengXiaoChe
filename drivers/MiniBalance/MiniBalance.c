@@ -19,8 +19,8 @@ void TIM1_UP_TIM16_IRQHandler(void)
 			key(100);                                                //===扫描按键状态
 		  Get_Angle(Way_Angle);                                    //===更新姿态	
  			Balance_Pwm =balance(Angle_Balance,Gyro_Balance);        //===平衡PID控制	
- 			Velocity_Pwm=velocity(Encoder_Left,Encoder_Right);       //===速度环PID控制
- 	    Turn_Pwm    =turn(Encoder_Left,Encoder_Right,Gyro_Turn); //===转向环PID控制     
+ 			Velocity_Pwm=velocity(Encoder_Left,Encoder_Right);       //===速度PID控制
+ 	    Turn_Pwm    =turn(Encoder_Left,Encoder_Right,Gyro_Turn); //===转向PID控制     
  		  Moto1=Balance_Pwm+Velocity_Pwm-Turn_Pwm;                 //===计算左轮电机最终PWM
  	  	Moto2=Balance_Pwm+Velocity_Pwm+Turn_Pwm;                 //===计算右轮电机最终PWM
    		Xianfu_Pwm();                                            //===PWM限幅
@@ -40,8 +40,8 @@ int balance(float Angle,float Gyro)
 	 int balance;	 
 	 Bias=Angle+0.5;              //===求出平衡的角度中值 和机械相关 +0意味着身重中心在0度附近 如果身重中心在5度附近 那就应该减去5
 	 if (Way_Angle>1)
-		balance=40*Bias + Gyro*0.13;//===计算平衡控制的电机PWM  PID控制 	
-	 else //DMP
+		balance=40*Bias + Gyro*0.13;//===计算平衡控制的电机PWM  PD控制 	
+	 else //DMP not work!!!!!!!!!!!!!!!!!!
 		balance = 33*Bias + Gyro*0.15;
 	 return balance;
 }
@@ -188,14 +188,14 @@ void Get_Angle(u8 way)
 		  Accel_X=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_XOUT_H)<<8)+I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_XOUT_L); //读取X轴加速度记
 	  	Accel_Z=(I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_ZOUT_H)<<8)+I2C_ReadOneByte(devAddr,MPU6050_RA_ACCEL_ZOUT_L); //读取Z轴加速度记
 		  if(Gyro_Y>32768)  Gyro_Y-=65536;     //数据类型转换
-			if(Gyro_Z>32768)  Gyro_Z-=65536;     //数据类型转换
-	  	if(Accel_X>32768) Accel_X-=65536;    //数据类型转换
-		  if(Accel_Z>32768) Accel_Z-=65536;    //数据类型转换
+			if(Gyro_Z>32768)  Gyro_Z-=65536;     
+	  	if(Accel_X>32768) Accel_X-=65536;    
+		  if(Accel_Z>32768) Accel_Z-=65536;    
 			Gyro_Balance=-Gyro_Y;                                  //更新平衡角速度
 	   	Accel_Y=atan2(Accel_X,Accel_Z)*180/PI;                 //计算与地面的夹角	
 		  Gyro_Y=Gyro_Y/16.4;                                    //陀螺仪量程转换	
       if(Way_Angle==2)		  	Kalman_Filter(Accel_Y,-Gyro_Y);//卡尔曼滤波	Y轴加速度 Y轴角速度
-				else if(Way_Angle==3)   Yijielvbo(Accel_Y,-Gyro_Y);    //互补滤波 Y轴加速度 Y轴角速度
+				else if(Way_Angle==3)   Yijielvbo(Accel_Y,-Gyro_Y);    //互补滤波 Y轴加速度 Y轴角速度 not good
 	    Angle_Balance=angle;                                   //更新平衡倾角
 			Gyro_Turn=Gyro_Z;                                      //更新转向角速度
 	  	}

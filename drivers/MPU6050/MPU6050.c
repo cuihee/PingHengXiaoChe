@@ -1,4 +1,3 @@
-//#include "main.c"
 #include "MPU6050.h"
 #include "IOI2C.h"
 #include "LED.h"
@@ -306,4 +305,3 @@ int Read_Temperature(void)
 		Temp=(36.53+Temp/340)*10;
 	  return (int)Temp;
 }
-//------------------End of File----------------------------

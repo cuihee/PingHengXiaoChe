@@ -18,3 +18,5 @@ HEX_OUTPUT/STM32100E-EVAL.htm
 *.o
 *.o
 HEX_OUTPUT/adc.o
+*.cuihe
+*.uvopt

@@ -18,7 +18,7 @@ int main(void)
 	uart3_init(72,9600);            //=====串口3初始化 波特率：9600
 	JTAG_Set(JTAG_SWD_DISABLE);     //=====关闭JTAG接口
 	JTAG_Set(SWD_ENABLE);           //=====打开SWD接口 可以利用主板的SWD接口调试
-  	led_init();                     //=====LED初始化
+  led_init();                     //=====LED初始化
 	KEY_Init();                     //=====按键初始化
 	Adc_Init();	                    //=====初始化ADC模块
 	MiniBalance_PWM_Init(3599,0);   //=====初始化PWM 20KHZ 高频可以防止电机低频时的尖叫声
@@ -26,13 +26,13 @@ int main(void)
 	Encoder_Init();                 //=====初始化编码器1
 	Encoder_Init2();	              //=====初始化编码器2
 	delay_ms(200);                  //=====延时等待稳定		
-  	IIC_Init();                     //=====模拟IIC初始化
-  	MPU6050_initialize();           //=====MPU6050初始化	
+  IIC_Init();                     //=====模拟IIC初始化
+  MPU6050_initialize();           //=====MPU6050初始化	
 	DMP_Init();                     //=====DMP初始化
 	Timer1_Init(49,7199);           //=====5MS进一次中断服务函数 中断服务函数在minibalance.c里面
   while(1)
   {
-				if(Way_Angle==1)               //DMP没有涉及到严格的时序问题，在主函数读取
+				if(Way_Angle==1)               													//DMP没有涉及到严格的时序问题，在主函数读取
 				{
 					Read_DMP();                      //===读取角速度和倾角
 					Angle_Balance=Pitch;             //===更新平衡倾角
@@ -42,11 +42,11 @@ int main(void)
 					Temperature = Read_Temperature();  //===读取MPU6050内置温度传感器数据，近似表示主板温度。
 					if(1==Flag_Show)		oled_show(); //===显示屏打开
 				}
-				if(Flag_Stop==1||Way_Angle>1)   
+				if(Way_Angle>1)// || Flag_Stop==1)   
 				{
 					Temperature = Read_Temperature();  //===读取MPU6050内置温度传感器数据，近似表示主板温度。
 					if(1==Flag_Show)		oled_show(); //===显示屏打开
-						//else	              DataScope(); //===显示屏关闭 打开上位机	（显示屏和上位机不能同时使用，好像也没有必要。。）		
+																								//else	              DataScope(); //===显示屏关闭 打开上位机	（显示屏和上位机不能同时使用，好像也没有必要。。）		
 				}
 	}	
 }
